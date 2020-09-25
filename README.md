@@ -2,8 +2,6 @@
 
 Replication data and scripts. 
 
-![](plots/leg-dimensions-facet.png)
-
 ## What's what
 
 * `R/`: Scripts for the figures and analysis: `figure-1.R` and `replication-script.R`.
@@ -18,3 +16,7 @@ Replication data and scripts.
 * Clone or download this repository. 
 * Set your `R` working directory to the top-level folder.
 * Run the scripts in the folder `R/`.
+
+***
+
+![](plots/leg-dimensions-facet.png)
