@@ -1,6 +1,8 @@
 # Beyond Expertise: Examining the Public Legitimacy of EU Agencies
 
-Replication data. 
+Replication data and scripts. 
+
+![](plots/leg-dimensions-facet.png)
 
 ## What's what
 
