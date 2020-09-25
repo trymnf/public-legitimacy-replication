@@ -1,0 +1,358 @@
+---
+title: 'Methodological Appendix: The Public Legitimacy of EU Agencies'
+output: 
+bibliography: ["out.bib", "packages.bib"]
+fontfamily: charter
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+# Packages 
+
+library(tidyverse)
+library(readxl)
+library(lubridate)
+
+# theming -----------------------------------------------------------------
+
+theme_set(theme_minimal() + theme(# text = element_text(family = "Roboto"),
+                                  plot.title = element_text(face = "bold")))
+
+theme_2 <- theme_minimal() + 
+  theme(# text = element_text(family = "Roboto"),
+        plot.title = element_text(face = "bold"))
+
+
+# Reading the data 
+together <- read_rds("../data/monthly-frequencies.Rds")
+```
+
+# Dictionary Approach
+
+We define four *a priori* dictionaries based on existing theory and central policy documents. 
+
+Legitimacy argument       Main sources    
+-----------------------   --------------------------------------------------------------
+Evidence-based            @Commission2002; @Majone1997a;
+                          @Maggetti2010; @Bellamy2010
+Legislator's command      @Bellamy2010; @Maggetti2010; @Eriksen2019a
+Participation             European Commission White Paper on Governance (COM/2001/0428);
+                          @Krick2019
+Human rights              European Charter of Fundamental Rights
+
+We aimed to define the dictionary before seeing the data we use for our analysis. Some tuning was nonetheless necessary. We had to remove words that made theoretical sense, but lacked the specificity necessary to pick up on our categories of theoretical interest. For instance, "control" is a core feature of the legislators' command argument, but impossible to use because it is too general (as in the term "border control"). The final dictionaries are given here: 
+
+### Evidence-based terms
+
+```
+expert*  
+okvalificerad*  
+kvalificerad*  
+kvalifikation*  
+teknokrat*  
+kunnskap*  
+vetande  
+ekonom  
+ekonomen  
+ekonomer  
+analys* 
+analytiker*  
+motbevis*  
+bevis*  
+faktum  
+faktumet 
+professionell*  
+ovetenskap*  
+vetenskap*  
+"Falska nyheter"  
+"alternativa fakta"  
+metodologi*  
+teknik  
+teknisk  
+tekniska
+```
+
+### Legislator’s command terms
+
+```
+ansvarig*
+folkvald* 
+riksdagen
+grundlagen
+delegera* 
+representant*
+representation*
+parlament*
+rösta
+röstade
+röstat
+folkomröst*
+```
+
+### Public participation terms
+
+```
+deltaga*
+medbestämmande*
+civilsamhälle*
+lekfolk
+lekmän
+lekman*
+partnerskap
+"civila samhället"
+utfråging* 
+svårgenomskådligt
+genomskådligt
+transparens 
+öppenhet
+inkluder*
+intressegrupp* 
+konsultation*
+```
+
+### Fundamental rights terms
+
+```
+människorätt*
+människans värdighet
+grundläggande rättighet*
+mänsklig(a) rättighet*
+ekonomisk(a) rättighet*
+social(a) rättighet*
+kulturell(a) rättighet*
+jämlikhet*
+jämställdhet*
+rättssäkerhet*
+fysisk integritet*
+mental integritet*
+humanitär*
+```
+# Agency contexts 
+
+We defined a sparse set of context terms for each agency. The aim of the contexts are to capture the relative coverage of an agency in news articles about its policy field. 
+
+The context terms are selected to capture a common-sense idea of the agencies respective policy areas. The initial terms were tuned after looking at a sample of articles. For Frontex, we had to widen the initial search terms from a narrower focus on border control to a wider focus on migrants and refugees. For EEA, we initially searched only for “climate change” and “global warming.” We found that most EEA articles in Sweden were about cars and air quality. So we included terms about air quality and emissions. EBA deals within a narrow domain which is well captured by a single word: “bank.” We use the plural, indefinite and definite (bank**er**, bank**erna**) in order to avoid homonyms. 
+
+Plotting monthly articles mentioning an agency against montly articles mentioning an agency *and its context terms* shows that the sparse context terms capture well the articles in which the agencies are mentioned.
+
+```{r agency-context}
+
+cor_table <- together %>% 
+  group_by(agency) %>% 
+  summarize(cor = cor(agency_in_context, agency_all))
+
+cor_vec <- paste(cor_table$agency, "\nCorrelation:", as.character(round(cor_table$cor, 3)))
+
+names(cor_vec) <- cor_table$agency
+
+together %>% 
+  filter(agency_all > 0 & agency_in_context > 0) %>% 
+  ggplot(aes(agency_all, agency_in_context)) + geom_point(alpha = 0.3, size = 1.2) + 
+  geom_abline(lty = 2, size = 1, alpha = 0.8, color = "grey80") + 
+  labs(
+    title = "Agency vs agency-in-context",
+    # subtitle = paste("Correlation:", eba_cor), 
+    caption = "Hits for agency compared to hits for agency AND context terms.",
+    x = "Agency only",
+    y = "Agency in context"
+  ) + scale_color_brewer(palette = "Set1")+ 
+  facet_wrap(~agency, scales = "free", labeller = labeller(agency = cor_vec)) + 
+  theme(aspect.ratio = 1)
+```
+
+```{r some setupp for the next paragraph}
+
+knitr::write_bib("reticulate", file = "packages.bib")
+
+howmany <- read_rds("../data/data.Rds")
+
+```
+
+
+# Data Collection 
+
+We use the dictionaries to gather our final corpus. We download all articles matching {agency $A_i$} **and** {any term in legitimacy dimension $D_j$} AND {any term in context $C_i$}. This gives 12 non-mutually-exclusive sets: three agencies-in-context by four legitimacy dimensions. We combine these sets into one dataset. We used a script for parsing text files from the Retriever Mediearkivet database written in `Python` by [anonymized for peer review]. We ran the script from `R` through the `reticulate` package [@R-reticulate]. This gave us a dataset with `r nrow(howmany)` articles and `r ncol(howmany)` variables.      
+
++-------------+------------------------------+-----------------------------+---------------------------------+
+|  **Agency** |       **Agency terms**       | **Context terms (Swedish)** | **Context terms (Translation)** |
++=============+==============================+=============================+=================================+
+| **Frontex** | Frontex                      | (migrant* OR flykting*)     | (migrant\* OR refugee\*)        |
++-------------+------------------------------+-----------------------------+---------------------------------+
+| **EEA**     | "Europeiska miljöbyrån"      | (utsläpp OR luftförorening* | (emissions OR 'air pollution'   |
+|             |                              | OR klimatändring            | OR 'climate change'             |
+|             |                              | OR 'global uppvärmning')    | OR 'global warming')            |
++-------------+------------------------------+-----------------------------+---------------------------------+
+| **EBA**     | "Europeiska bankmyndigheten" | (banker OR bankerna)        | (banks or 'the banks')          |
++-------------+------------------------------+-----------------------------+---------------------------------+
+
+Table: Search terms for agencies and their respective contexts 
+
+Additionally, we download the monthly *frequency* of: 
+
+* Articles mentioning an agency 
+* Articles mentioning any of an agency's *context terms*.
+* Articles mentioning an agency *and* any of its context terms. 
+
+These figures allow us to calculate an agency's relative coverage within a theoretically defined context. They also allow us to calculate the total number of legitimacy terms per article about an agency, without needing to download the full text of articles with zero hits on the legitimacy dictionaries.  
+
+# Descriptive statistics on agencies and their contexts 
+
+This section presents the monthly number of articles mentioning an agency, its context terms, and an agency *and* any of its context terms. Note that the scale of the plots' y-axes vary greatly. 
+
+```{r}
+agency_name <- "Frontex"
+
+lab_tab <- together %>% 
+  filter(agency == agency_name) %>% 
+  pivot_longer(cols = -c(month, agency), names_to = "term", values_to = "articles") %>%
+  group_by(term) %>% 
+  summarize(placement = max(articles)*0.8, 
+            agency = unique(agency), 
+            month  = min(month)) %>% 
+  mutate(term_names = recode(term, 
+                       agency_all = "Agency, all mentions",
+                       agency_in_context = "Agency in context",
+                       context = "Context"
+                       ))
+
+together %>% 
+  filter(agency == agency_name) %>% 
+  pivot_longer(cols = -c(month, agency), names_to = "term", values_to = "articles") %>%
+  group_by(term) %>% 
+  mutate(placement = max(articles)*0.8, 
+         placement = ifelse(month == ymd("2005-01-01"), placement, NA)) %>% 
+  ungroup() %>% 
+  ggplot(aes(month, articles, group = term,
+             color = term)) + 
+  geom_line(size = 1) + 
+  facet_grid(vars(term), scales = "free_y", labeller = labeller(NULL)) + 
+  labs(title = glue::glue("Articles mentioning {agency_name} vs total agency context"),
+       caption = "Note: Y axes are different", 
+       x = "Month", 
+       y = "Monthly no. of articles",
+       color = "Search term") + 
+  geom_label(data = lab_tab, aes(label = term_names, x = ymd("2005-01-01"), 
+                                 y = placement), hjust = 0) +
+  scale_color_brewer(palette = "Set1") + theme_2 + 
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text.y = element_blank()) + 
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y")
+```
+
+
+```{r echo = FALSE, warning=FALSE, message = FALSE}
+
+agency_name <- "EEA"
+
+lab_tab <- together %>% 
+  filter(agency == agency_name) %>% 
+  pivot_longer(cols = -c(month, agency), names_to = "term", values_to = "articles") %>%
+  group_by(term) %>% 
+  summarize(placement = max(articles)*0.8, 
+            agency = unique(agency), 
+            month  = min(month)) %>% 
+  mutate(term_names = recode(term, 
+                       agency_all = "Agency, all mentions",
+                       agency_in_context = "Agency in context",
+                       context = "Context"
+                       ))
+
+together %>% 
+  filter(agency == agency_name) %>% 
+  pivot_longer(cols = -c(month, agency), names_to = "term", values_to = "articles") %>%
+  group_by(term) %>% 
+  mutate(placement = max(articles)*0.9, 
+         placement = ifelse(month == ymd("2005-01-01"), placement, NA)) %>% 
+  ungroup() %>% 
+  ggplot(aes(month, articles, group = term,
+             color = term)) + 
+  geom_line(size = 1) + 
+  facet_grid(vars(term), scales = "free_y", labeller = labeller(NULL)) + 
+  labs(title = glue::glue("Articles mentioning {agency_name} vs total agency context"),
+       caption = "Note: Y axes are different", 
+       x = "Month", 
+       y = "Monthly no. of articles",
+       color = "Search term") + 
+  geom_label(data = lab_tab, aes(label = term_names, x = ymd("2005-01-01"), 
+                                 y = placement), hjust = 0) +
+  scale_color_brewer(palette = "Set1") + theme_2 + 
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text.y = element_blank())+ 
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y")
+```
+
+
+```{r}
+
+agency_name <- "EBA"
+
+lab_tab <- together %>% 
+  filter(agency == agency_name) %>% 
+  pivot_longer(cols = -c(month, agency), names_to = "term", values_to = "articles") %>%
+  group_by(term) %>% 
+  summarize(placement = max(articles)*0.8, 
+            agency = unique(agency), 
+            month  = min(month)) %>% 
+  mutate(term_names = recode(term, 
+                       agency_all = "Agency, all mentions",
+                       agency_in_context = "Agency in context",
+                       context = "Context"
+                       ))
+
+together %>% 
+  filter(agency == agency_name) %>% 
+  pivot_longer(cols = -c(month, agency), names_to = "term", values_to = "articles") %>%
+  group_by(term) %>% 
+  mutate(placement = max(articles)*0.8, 
+         placement = ifelse(month == ymd("2005-01-01"), placement, NA)) %>% 
+  ungroup() %>% 
+  ggplot(aes(month, articles, group = term,
+             color = term)) + 
+  geom_line(size = 1) + 
+  facet_grid(vars(term), scales = "free_y", labeller = labeller(NULL)) + 
+  labs(title = glue::glue("Articles mentioning {agency_name} vs total agency context"),
+       caption = "Note: Y axes are different", 
+       x = "Month", 
+       y = "Monthly no. of articles",
+       color = "Search term") + 
+  geom_label(data = lab_tab, aes(label = term_names, x = ymd("2005-01-01"), 
+                                 y = placement), hjust = 0) +
+  scale_color_brewer(palette = "Set1") + theme_2 + 
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text.y = element_blank()) + 
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y")
+```
+
+# Details on analysis
+
+## Term frequencies and TF-IDF 
+
+As a next step, we score each article on our legitimacy dimensions. We calculate two main measures: The term frequency ($\mathit{tf}_{d,t}$) counts the number of words from each legitimacy dimension in each article. The TF-IDF weighs the term frequency by how many documents the term appears in.   
+
+2. For each article $d$, count how many times it contains each term $t$ in each dictionary. This gives every article an array of terms in four dictionaries, and their frequencies: $\mathit{tf}_{d,t}$
+3. For each term, calculate its *inverse document frequency*, given by  $\mathit{idf}_t = \log{\frac{1 + N}{1 + \mathit{df}_t}}$, where $N$ is the total number of articles in the corpus and $\mathit{df}_t$ is the number of articles containing term $t$. 
+4. For each article and term, calculate its TF-IDF by $\mathit{tf}_{d,t} \times \mathit{idf}_t$. 
+5. For each article, summarize the TF-IDF scores within each legitimacy dimension.
+6. Also, summarize each article's total term frequency $TF$ for each legitimacy dimension.
+
+In order to obtain the words-per-article measure reported in the article's Figure 2, panel **A**, we calculated the total term frequency for each agency-legitimacy-dimension combination, divided by the total number of articles mentioning that agency. We also calculated the same measure by year in panel **B**. 
+
+## Articles selected for qualitative coding
+
+We select the 40 articles with the highest total TF-IDF on a legitimacy dimension for qualitative analysis. Some agencies have less than 40 articles in a legitimacy dimension. Moreover, since TF-IDFs are calculated from a limited set of integers, there are inevitably some articles with exactly equal TF-IDFs. When this is the case for the 40th highest, we include all articles with that score. That gives more than 40 articles in some cells of the below table.  
+
+
+Table: Number of articles selected for qualitative analysis, by agency and legitimacy dimension.
+
+Agency     Evidence-based   Fundamental rights   Legislator's Command   Participation
+--------  ---------------  -------------------  ---------------------  --------------
+EBA                    40                    7                     42              26
+EEA                    40                    6                     20               9
+Frontex                40                   41                     40              45
+
+# References
+
