@@ -15,7 +15,7 @@ Replication data and scripts.
 ## How to run
 
 * Clone or download this repository. 
-* Set your `R` working directory to the top-level folder, or simply open the .Rproj file. 
+* Set your `R` working directory to the top-level folder, or simply open the `public-legitimacy-replication.Rproj` file. 
 * Run the scripts in the folder `R/`.
 
 ***
