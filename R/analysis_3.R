@@ -288,10 +288,10 @@ get_mean_boots_agency <- function(split){
 
 
 # This will create the bootstrapped dataset when you run the script for the first time, 
-# and save it to disk. It will then read it from disk at subsequent runs
+# and save it to disk. The file will be read from disk at subsequent runs
 
 if(file.exists("data/boot_mod_ungr.Rds")){
-  boot_mod_ungr <- read_rds("backups/boot_mod_ungr.Rds")
+  boot_mod_ungr <- read_rds("data/boot_mod_ungr.Rds")
 } else {
   boot_mod_ungr <- boots_agency %>% 
     mutate(model = 
