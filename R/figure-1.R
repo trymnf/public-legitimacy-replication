@@ -22,7 +22,7 @@ monthly_frequencies <- read_rds("data/monthly-frequencies.Rds")
 
 anno_text <- tibble(agency = "EBA", month = ymd("20110101"), proportion = 0.05)
 
-together %>% 
+monthly_frequencies %>% 
   mutate(proportion = 
            agency_in_context/context) %>% 
   ggplot(aes(month, proportion)) + 
