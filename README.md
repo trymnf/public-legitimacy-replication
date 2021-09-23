@@ -20,4 +20,4 @@ Replication data and scripts.
 
 ***
 
-![](plots/leg-dimensions-facet.png)
+![](plots/hardness_halfeye.png)
