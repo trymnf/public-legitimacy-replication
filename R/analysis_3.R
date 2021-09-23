@@ -327,7 +327,7 @@ boot_mod_ungr %>%
   theme(panel.grid.major.x = element_blank(), 
         strip.text = element_text(face = "bold"))
 
-ggsave(width = 10, height = 8, dpi = 300, filename = "plots/hardness_halfeye.png", units = "cm")
+ggsave(width = 15, height = 8, dpi = 300, filename = "plots/hardness_halfeye.png", units = "cm")
 
 
 
