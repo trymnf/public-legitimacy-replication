@@ -210,7 +210,7 @@ These figures allow us to calculate an agency's relative coverage within a theor
 
 Plotting monthly articles mentioning an agency against monhtly articles mentioning an agency *and its context terms* shows that the sparse context terms capture well the articles in which the agencies are mentioned. See \@ref(fig:agency-context).
 
-```{r agency-context, fig.cap="Monthly hits for agency plotted against monthly hits for *agency-in-context*."}
+```{r agency-context, fig.cap="Monthly hits for agency plotted against monthly hits for *agency-in-context*.", fig.height=4}
 
 cor_table <- together %>% 
   group_by(agency) %>% 
@@ -234,6 +234,52 @@ together %>%
   facet_wrap(~agency, scales = "free", labeller = labeller(agency = cor_vec)) + 
   theme(aspect.ratio = 1)
 ```
+
+Figure \@ref(fig:aic-over-time) shows the monthly percentage of articles in an agency's context that also mentions the agency. We see, for instance, that the *relative* coverage of Frontex increased (in articles about refugees and migrants) during the 2015 refugee crisis. 
+
+```{r aic-over-time, fig.cap="Monthly percentage of articles in an agency’s context mentioning the agency. With LOESS smoothed conditional mean (red line). Each point is one month.", fig.height=4}
+
+library(scales)
+
+anno_text <- tibble(agency = "EBA", month = ymd("20110101"), proportion = 0.05)
+
+together %>% 
+  mutate(proportion = 
+           agency_in_context/context) %>% 
+  ggplot(aes(month, proportion)) + 
+  geom_point(
+    size = 2,
+    alpha = 0.5) + 
+  geom_smooth(
+    span = 0.6, 
+    se =  FALSE,
+    color = "tomato",
+    show.legend = FALSE) +
+  facet_wrap(~agency) +
+  scale_y_continuous(labels = percent_format(1)) + 
+  scale_x_date(breaks = scales::date_breaks("4 years"),
+               labels = date_format("%Y"), 
+               limits = c(ymd("20050101"), 
+                          ymd("20200101"))) + 
+  labs(y = NULL, 
+       x = "Date") + 
+  theme(strip.text = element_text(face = "bold")) +
+  geom_vline(data = anno_text, 
+             aes(xintercept = month), 
+             lty = 2, 
+             alpha = 0.5) +
+  geom_text(data = anno_text, 
+            label = "January 2011:\nEBA established",
+            aes(x = month,
+                y = proportion),
+            hjust = - 0.05,
+            family = "IBM Plex Sans", # Comment out if needed
+            size = 3
+            ) + 
+  scale_color_viridis_d()
+
+```
+
 
 ## Descriptive statistics on agencies and their contexts
 
