@@ -15,17 +15,6 @@ theme_set(theme_minimal() +
                   plot.title = element_text(face = "bold")))
 
 
-# Loading data -----------------------------------------------------------
-
-
-# In case of updates to big dataset (not in repository): 
-
-# dt_big <- read_rds("../data/created-data/dt_hits.Rds")
-# 
-# dt_hits <- dt_big %>% 
-#   select(-c(body, body_strip, language, country, keyTitle, is_shortened))
-# 
-# write_csv(dt_hits, "data/dt_hits.csv")
 
 # ----------------------------------------------------
 
@@ -71,16 +60,20 @@ sum_dt <- dt_tfidfs %>%
 
 # Joining back to articles ------------------------------------------------
 
-dt <- read_rds("data/data.Rds")
+# The commented-out code works on full-text data -- not available in this repository. 
+# Kept here for transparency purposes. 
 
-dt_tf <- dt %>%
-  left_join(sum_dt, by = "id")
+
+# dt <- read_rds("data/data.Rds")
+
+# dt_tf <- dt %>%
+#   left_join(sum_dt, by = "id")
 
 # Check that the dimensions are correct. Each article gets 4 rows; 
 # one for each legitimacy dimension
 
-stopifnot(nrow(dt) * length(unique(dt$leg_dim)) == nrow(dt_tf))
-stopifnot(all(table(dt_tf$id) == 4))
+# stopifnot(nrow(dt) * length(unique(dt$leg_dim)) == nrow(dt_tf))
+# stopifnot(all(table(dt_tf$id) == 4))
 
 
 # Filtering ---------------------------------------------------------------
@@ -88,42 +81,43 @@ stopifnot(all(table(dt_tf$id) == 4))
 # Due to the search process, there will be duplicates between the legitimacy dimensions.
 # We need to remove these. 
 
-dt_filtered <- dt_tf %>%
-  mutate(keep = case_when(
-    leg_dim == "expertise" & dimension == "ev_based" ~ TRUE,
-    leg_dim == "leg-command" & dimension == "leg_command" ~ TRUE,
-    leg_dim == "leg-command" & dimension == "leg_no_control" ~ TRUE,
-    dimension == "fundamental_rights" & art_sum > 0 ~ TRUE,
-    leg_dim == dimension ~ TRUE, # participation == participation
-    TRUE ~ FALSE # I.e. all the rest == FALSE
-  )) %>%
-  filter(keep)
+# dt_filtered <- dt_tf %>%
+#   mutate(keep = case_when(
+#     leg_dim == "expertise" & dimension == "ev_based" ~ TRUE,
+#     leg_dim == "leg-command" & dimension == "leg_command" ~ TRUE,
+#     leg_dim == "leg-command" & dimension == "leg_no_control" ~ TRUE,
+#     dimension == "fundamental_rights" & art_sum > 0 ~ TRUE,
+#     leg_dim == dimension ~ TRUE, # participation == participation
+#     TRUE ~ FALSE # I.e. all the rest == FALSE
+#   )) %>%
+#   filter(keep)
 
 # Removing duplicates *within* each legitimacy dimension --------------------
 
-dt_no_dupes <- dt_filtered %>%
-  group_by(
-    agency, title, body_strip, source,
-    publishDate, dimension,
-    tf_sum, art_sum, month
-  ) %>%
-  summarise(
-    n = n(),
-    ids = list(id)
-  ) %>%
-  arrange(publishDate)
+# dt_no_dupes <- dt_filtered %>%
+#   group_by(
+#     agency, title, body_strip, source,
+#     publishDate, dimension,
+#     tf_sum, art_sum, month
+#   ) %>%
+#   summarise(
+#     n = n(),
+#     ids = list(id)
+#   ) %>%
+#   arrange(publishDate)
 
 
 # Creating monthly term frequencies ---------------------------------------
 
-monthlies <- dt_no_dupes %>%
-  group_by(agency, dimension, month) %>%
-  summarize(
-    wordcount = sum(art_sum),
-    tfcount = sum(tf_sum)
-  ) %>%
-  ungroup()
+# monthlies <- dt_no_dupes %>%
+#   group_by(agency, dimension, month) %>%
+#   summarize(
+#     wordcount = sum(art_sum),
+#     tfcount = sum(tf_sum)
+#   ) %>%
+#   ungroup()
 
+monthlies <- read_rds("data/monthlies.rds")
 
 # Joining with total monthly frequencies (also for articles not downloaded) ----
 
@@ -239,7 +233,6 @@ yearlies %>%
         strip.text = element_text(face = "bold")) + 
   scale_x_continuous(breaks = c(2007, 2010, 2013, 2016, 2019)) -> yearly_plot
 
-yearly_plot
 
 # Combining and saving ----------------------------------------------------
 

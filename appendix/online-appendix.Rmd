@@ -1,0 +1,729 @@
+---
+title: 'Beyond expertise: The Public Construction of Legitimacy for EU Agencies'
+subtitle: Online Appendix
+mainfont: Charter
+monofont: Inconsolata
+linestretch: 1.15
+output:
+  bookdown::pdf_document2:
+    dev: cairo_pdf
+    latex_engine: xelatex
+    includes: 
+      in_header: "preamble.tex"
+  bookdown::html_document2:
+    df_print: paged
+  bookdown::word_document2: default
+bibliography: [out.bib, packages.bib]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+# Packages 
+
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(patchwork)
+
+# theming -----------------------------------------------------------------
+
+theme_set(theme_minimal() + theme(text = element_text(family = "IBM Plex Sans"),
+                                  plot.title = element_text(face = "bold")))
+
+theme_2 <- theme_minimal() + 
+  theme(# text = element_text(family = "Roboto"),
+        plot.title = element_text(face = "bold"))
+
+names_lookup <- c(
+  eba = "EBA",
+  eea = "EEA",
+  frontex = "Frontex"
+)
+
+# A vector with full names of dimensions
+
+recode_lookup <- c(evidence = "Evidence-based",
+                   hr       = "Fundamental\nRights",
+                   leg_command = "Legislator's\nCommand", 
+                   participation = "Participation", 
+                   none = "All articles")
+
+
+# Reading the data 
+together <- read_rds("../data/together-sep2020.Rds")
+
+```
+
+# Dictionary Approach
+
+We define four *a priori* dictionaries based on existing theory and central policy documents.
+
++----------------------+----------------------------------------------------------------+
+| Legitimacy argument  | Main sources                                                   |
++:=====================+:===============================================================+
+| Evidence-based       | @Commission2002; @Majone1997a;                                 |
++----------------------+----------------------------------------------------------------+
+|                      | @Maggetti2010; @Bellamy2010                                    |
++----------------------+----------------------------------------------------------------+
+| Legislator's command | @Bellamy2010; @Maggetti2010; @Eriksen2019a                     |
++----------------------+----------------------------------------------------------------+
+| Participation        | European Commission White Paper on Governance (COM/2001/0428); |
++----------------------+----------------------------------------------------------------+
+|                      | @Krick2019                                                     |
++----------------------+----------------------------------------------------------------+
+| Human rights         | European Charter of Fundamental Rights                         |
++----------------------+----------------------------------------------------------------+
+
+We aimed to define the dictionary before seeing the data we use for our analysis. Some tuning was nonetheless necessary. We had to remove words that made theoretical sense, but lacked the specificity necessary to pick up on our categories of theoretical interest. For instance, "control" is a core feature of the legislators' command argument, but impossible to use because it is too general (as in the term "border control"). The final dictionaries are given here:
+
+## Dictionary terms
+
+| Swedish terms       | Translated                |
+|---------------------|---------------------------|
+| expert\*            | Expert                    |
+| okvalificerad\*     | unqualified               |
+| kvalificerad\*      | qualified                 |
+| kvalifikation\*     | qualification             |
+| teknokrat\*         | technocrat                |
+| kunnskap\*          | knowledge                 |
+| vetande             | knowledge (synonym)       |
+| ekonom              | economist                 |
+| ekonomen            | the economist             |
+| ekonomer            | economists                |
+| analys\*            | analysis                  |
+| analytiker\*        | analyst                   |
+| motbevis\*          | disprove                  |
+| bevis\*             | prove/proof               |
+| faktum              | fact                      |
+| faktumet            | the fact                  |
+| professionell\*     | professional              |
+| ovetenskap\*        | unscientific              |
+| vetenskap\*         | scientific                |
+| "Falska nyheter"    | "fake news"               |
+| "alternativa fakta" | "alternative facts"       |
+| metodologi\*        | methodology               |
+| teknik              | technique                 |
+| teknisk             | technical                 |
+| tekniska            | technical (determinative) |
+
+: Evidence-based terms
+
+| Swedish terms    | Translated                                          |
+|------------------|-----------------------------------------------------|
+| ansvarig\*       | responsible/responsibility/responsibilities         |
+| folkvald\*       | elected (by the people) / elected representative(s) |
+| riksdagen        | The National Assembly                               |
+| grundlagen       | the constitution                                    |
+| delegera\*       | delegate/-ion                                       |
+| representant\*   | representative(s)                                   |
+| representation\* | representation(s)                                   |
+| parlament\*      | parliament(s)                                       |
+| rösta            | vote                                                |
+| röstade          | voted (past)                                        |
+| röstat           | voted (perfect)                                     |
+| folkomröst\*     | Popular vote/referendum                             |
+
+: Legislator's command terms 
+
+| Swedish terms      | Translated          |
+|--------------------|---------------------|
+| deltaga\*          | participate/-ion    |
+| medbestämmande\*   | co-determinate/-ion |
+| civilsamhälle\*    | civil society       |
+| lekfolk            | lay people          |
+| lekmän             | laymen              |
+| lekman\*           | layman              |
+| partnerskap        | partnership         |
+| "civila samhället" | "civil society"     |
+| utfrågning\*       | questioning         |
+| svårgenomskådligt  | not transparent     |
+| genomskådligt      | transparent         |
+| transparens        | transparency        |
+| öppenhet           | openness            |
+| inkluder\*         | include/inclusion   |
+| intressegrupp\*    | interest group(s)   |
+| konsultation\*     | consultation(s)     |
+
+: Public participation terms 
+
+
+| Swedish terms             | Translation                              |
+|---------------------------|------------------------------------------|
+| människorätt\*            | human right(s)                           |
+| människans värdighet      | human dignity                            |
+| grundläggande rättighet\* | fundamental right(s)                     |
+| mänsklig(a) rättighet\*   | human right(s) (synonym)                 |
+| ekonomisk(a) rättighet\*  | economic right(s)                        |
+| social(a) rättighet\*     | social right(s)                          |
+| kulturell(a) rättighet\*  | cultural right(s)                        |
+| jämlikhet\*               | equality                                 |
+| jämställdhet\*            | equality                                 |
+| rättssäkerhet\*           | the rule of law / security under the law |
+| fysisk integritet\*       | physical integrity                       |
+| mental integritet\*       | mental integrity                         |
+| humanitär\*               | humanitarian                             |
+
+: Fundamental rights terms 
+
+
+
+# Analysis 1 and 2 
+
+## Agency contexts
+
+We defined a sparse set of context terms for each agency. The aim of the contexts are to capture the relative coverage of an agency in news articles about its policy field.
+
+The context terms are selected to capture a common-sense idea of the agencies respective policy areas. The initial terms were tuned after looking at a sample of articles. For Frontex, we had to widen the initial search terms from a narrower focus on border control to a wider focus on migrants and refugees. For EEA, we initially searched only for "climate change" and "global warming." We found that most EEA articles in Sweden were about cars and air quality. So we included terms about air quality and emissions. EBA deals within a narrow domain which is well captured by a single word: "bank." We use the plural, indefinite and definite (bank**er**, bank**erna**) in order to avoid homonyms.
+
+```{r some setup for the next paragraph}
+
+# knitr::write_bib("reticulate", file = "packages.bib")
+
+howmany <- read_rds("../data/three-agencies-and-context-and-all-dimensions-new.Rds")
+
+```
+
+## Data collection
+
+We use the dictionaries to gather our final corpus. We download all articles matching {agency $A_i$} **and** {any term in legitimacy dimension $D_j$} AND {any term in context $C_i$}. This gives 12 non-mutually-exclusive sets: three agencies-in-context by four legitimacy dimensions. We combine these sets into one dataset. We used a script for parsing text files from the Retriever Mediearkivet database written in `Python` by [anonymized for peer review]. We ran the script from `R` through the `reticulate` package [@R-reticulate]. This gave us a dataset with `r nrow(howmany)` articles and `r ncol(howmany)` variables.
+
++-------------+------------------------------+------------------------------------------------------------------------+------------------------------------------------------------------------+
+| **Agency**  | **Agency terms**             | **Context terms (Swedish)**                                            | **Context terms (Translation)**                                        |
++=============+==============================+========================================================================+========================================================================+
+| **Frontex** | Frontex                      | (migrant\* OR flykting\*)                                              | (migrant\* OR refugee\*)                                               |
++-------------+------------------------------+------------------------------------------------------------------------+------------------------------------------------------------------------+
+| **EEA**     | "Europeiska miljöbyrån"      | (utsläpp OR luftförorening\* OR klimatändring OR 'global uppvärmning') | (emissions OR 'air pollution' OR 'climate change' OR 'global warming') |
++-------------+------------------------------+------------------------------------------------------------------------+------------------------------------------------------------------------+
+| **EBA**     | "Europeiska bankmyndigheten" | (banker OR bankerna)                                                   | (banks or 'the banks')                                                 |
++-------------+------------------------------+------------------------------------------------------------------------+------------------------------------------------------------------------+
+
+: Search terms for agencies and their respective contexts
+
+Additionally, we download the monthly *frequency* of:
+
+-   Articles mentioning an agency
+-   Articles mentioning any of an agency's *context terms*.
+-   Articles mentioning an agency *and* any of its context terms.
+
+These figures allow us to calculate an agency's relative coverage within a theoretically defined context. They also allow us to calculate the total number of legitimacy terms per article about an agency, without needing to download the full text of articles with zero hits on the legitimacy dictionaries.
+
+Plotting monthly articles mentioning an agency against monhtly articles mentioning an agency *and its context terms* shows that the sparse context terms capture well the articles in which the agencies are mentioned. See \@ref(fig:agency-context).
+
+```{r agency-context, fig.cap="Monthly hits for agency plotted against monthly hits for *agency-in-context*."}
+
+cor_table <- together %>% 
+  group_by(agency) %>% 
+  summarize(cor = cor(agency_in_context, agency_all))
+
+cor_vec <- paste(cor_table$agency, "\nCorrelation:", as.character(round(cor_table$cor, 3)))
+
+names(cor_vec) <- cor_table$agency
+
+together %>% 
+  filter(agency_all > 0 & agency_in_context > 0) %>% 
+  ggplot(aes(agency_all, agency_in_context)) + geom_point(alpha = 0.3, size = 1.2) + 
+  geom_abline(lty = 2, size = 1, alpha = 0.8, color = "grey80") + 
+  labs(
+    title = "Agency vs agency-in-context",
+    # subtitle = paste("Correlation:", eba_cor), 
+    caption = "Hits for agency compared to hits for agency AND context terms.",
+    x = "Agency only",
+    y = "Agency in context"
+  ) + scale_color_brewer(palette = "Set1")+ 
+  facet_wrap(~agency, scales = "free", labeller = labeller(agency = cor_vec)) + 
+  theme(aspect.ratio = 1)
+```
+
+## Descriptive statistics on agencies and their contexts
+
+This section presents the monthly number of articles mentioning an agency, its context terms, and an agency *and* any of its context terms. Note that the scale of the plots' y-axes vary greatly.
+
+```{r frontex-stats,  fig.cap="Search hits, EEA"}
+agency_name <- "Frontex"
+
+lab_tab <- together %>% 
+  filter(agency == agency_name) %>% 
+  pivot_longer(cols = -c(month, agency), names_to = "term", values_to = "articles") %>%
+  group_by(term) %>% 
+  summarize(placement = max(articles)*0.8, 
+            agency = unique(agency), 
+            month  = min(month)) %>% 
+  mutate(term_names = recode(term, 
+                       agency_all = "Agency, all mentions",
+                       agency_in_context = "Agency in context",
+                       context = "Context"
+                       ))
+
+together %>% 
+  filter(agency == agency_name) %>% 
+  pivot_longer(cols = -c(month, agency), names_to = "term", values_to = "articles") %>%
+  group_by(term) %>% 
+  mutate(placement = max(articles)*0.8, 
+         placement = ifelse(month == ymd("2005-01-01"), placement, NA)) %>% 
+  ungroup() %>% 
+  ggplot(aes(month, articles, group = term,
+             color = term)) + 
+  geom_line(size = 1) + 
+  facet_grid(vars(term), scales = "free_y", labeller = labeller(NULL)) + 
+  labs(title = glue::glue("Articles mentioning {agency_name} vs total agency context"),
+       caption = "Note: Y axes are different", 
+       x = "Month", 
+       y = "Monthly no. of articles",
+       color = "Search term") + 
+  geom_label(data = lab_tab, aes(label = term_names, x = ymd("2005-01-01"), 
+                                 y = placement), hjust = 0) +
+  scale_color_brewer(palette = "Set1") + theme_2 + 
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text.y = element_blank()) + 
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y")
+```
+
+```{r eea-stats, echo = FALSE, warning=FALSE, message = FALSE, fig.cap="Search hits, EEA"}
+
+agency_name <- "EEA"
+
+lab_tab <- together %>% 
+  filter(agency == agency_name) %>% 
+  pivot_longer(cols = -c(month, agency), names_to = "term", values_to = "articles") %>%
+  group_by(term) %>% 
+  summarize(placement = max(articles)*0.8, 
+            agency = unique(agency), 
+            month  = min(month)) %>% 
+  mutate(term_names = recode(term, 
+                       agency_all = "Agency, all mentions",
+                       agency_in_context = "Agency in context",
+                       context = "Context"
+                       ))
+
+together %>% 
+  filter(agency == agency_name) %>% 
+  pivot_longer(cols = -c(month, agency), names_to = "term", values_to = "articles") %>%
+  group_by(term) %>% 
+  mutate(placement = max(articles)*0.9, 
+         placement = ifelse(month == ymd("2005-01-01"), placement, NA)) %>% 
+  ungroup() %>% 
+  ggplot(aes(month, articles, group = term,
+             color = term)) + 
+  geom_line(size = 1) + 
+  facet_grid(vars(term), scales = "free_y", labeller = labeller(NULL)) + 
+  labs(title = glue::glue("Articles mentioning {agency_name} vs total agency context"),
+       caption = "Note: Y axes are different", 
+       x = "Month", 
+       y = "Monthly no. of articles",
+       color = "Search term") + 
+  geom_label(data = lab_tab, aes(label = term_names, x = ymd("2005-01-01"), 
+                                 y = placement), hjust = 0) +
+  scale_color_brewer(palette = "Set1") + theme_2 + 
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text.y = element_blank())+ 
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y")
+```
+
+```{r eba-stats, fig.cap="Search hits, EBA"}
+
+agency_name <- "EBA"
+
+lab_tab <- together %>% 
+  filter(agency == agency_name) %>% 
+  pivot_longer(cols = -c(month, agency), names_to = "term", values_to = "articles") %>%
+  group_by(term) %>% 
+  summarize(placement = max(articles)*0.8, 
+            agency = unique(agency), 
+            month  = min(month)) %>% 
+  mutate(term_names = recode(term, 
+                       agency_all = "Agency, all mentions",
+                       agency_in_context = "Agency in context",
+                       context = "Context"
+                       ))
+
+together %>% 
+  filter(agency == agency_name) %>% 
+  pivot_longer(cols = -c(month, agency), names_to = "term", values_to = "articles") %>%
+  group_by(term) %>% 
+  mutate(placement = max(articles)*0.8, 
+         placement = ifelse(month == ymd("2005-01-01"), placement, NA)) %>% 
+  ungroup() %>% 
+  ggplot(aes(month, articles, group = term,
+             color = term)) + 
+  geom_line(size = 1) + 
+  facet_grid(vars(term), scales = "free_y", labeller = labeller(NULL)) + 
+  labs(title = glue::glue("Articles mentioning {agency_name} vs total agency context"),
+       caption = "Note: Y axes are different", 
+       x = "Month", 
+       y = "Monthly no. of articles",
+       color = "Search term") + 
+  geom_label(data = lab_tab, aes(label = term_names, x = ymd("2005-01-01"), 
+                                 y = placement), hjust = 0) +
+  scale_color_brewer(palette = "Set1") + theme_2 + 
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text.y = element_blank()) + 
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y")
+```
+
+\clearpage
+
+## Term frequencies and TF-IDF
+
+As a next step, we score each article on our legitimacy dimensions. We calculate two main measures: The term frequency ($\mathit{tf}_{d,t}$) counts the number of words from each legitimacy dimension in each article. The TF-IDF weighs the term frequency by how many documents the term appears in.
+
+1.  For each article $d$, count how many times it contains each term $t$ in each dictionary. This gives every article an array of terms in four dictionaries, and their frequencies: $\mathit{tf}_{d,t}$
+2.  For each term, calculate its *inverse document frequency*, given by $\mathit{idf}_t = \log{\frac{1 + N}{1 + \mathit{df}_t}}$, where $N$ is the total number of articles in the corpus and $\mathit{df}_t$ is the number of articles containing term $t$.
+3.  For each article and term, calculate its TF-IDF by $\mathit{tf}_{d,t} \times \mathit{idf}_t$.
+4.  For each article, summarize the TF-IDF scores within each legitimacy dimension.
+5.  Also, summarize each article's total term frequency $TF$ for each legitimacy dimension.
+
+In order to obtain the words-per-article measure reported in the article's Figure 2, panel **A**, we calculated the total term frequency for each agency-legitimacy-dimension combination, divided by the total number of articles mentioning that agency. We also calculated the same measure by year in panel **B**.
+
+## Articles selected for qualitative coding
+
+We select the 40 articles with the highest total TF-IDF on a legitimacy dimension for qualitative analysis. Some agencies have less than 40 articles in a legitimacy dimension. Moreover, since TF-IDFs are calculated from a limited set of integers, there are inevitably some articles with exactly equal TF-IDFs. When this is the case for the 40th highest, we include all articles with that score. That gives more than 40 articles in some cells of the below table.
+
+| Agency  | Evidence-based | Fundamental rights | Legislator's Command | Participation |
+|:--------|---------------:|-------------------:|---------------------:|--------------:|
+| EBA     |             40 |                  7 |                   42 |            26 |
+| EEA     |             40 |                  6 |                   20 |             9 |
+| Frontex |             40 |                 41 |                   40 |            45 |
+
+: Number of articles selected for qualitative analysis, by agency and legitimacy dimension.
+
+## Who does the speaking?
+
+In the qualitative corpus, what actors are the most prominent sources? (Note that the qualitative corpus is a non-random and possibly non-representative sample of the full corpus, in quantitative terms.)
+
+```{r qual-table, results='asis'}
+
+# Pasted from NVIVO
+
+qual_table <- tibble::tribble(
+                     ~"Speaker",     ~"EBA",    ~"EEA",  ~"Frontex",   ~"Total", 
+     "Agency (-representative)",    "5,26%",   "81,25%",     "8,82%",   "19,42%", 
+                      "Citizen",       "0%",       "0%",     "1,47%",    "0,97%", 
+           "Civil society, NGO",       "0%",    "6,25%",    "20,59%",   "14,56%", 
+                   "Politician",   "15,79%",    "6,25%",    "58,82%",   "42,72%", 
+                   "Commission",   "10,53%",       "0%",     "2,94%",    "3,88%", 
+                     "Industry",   "47,37%",    "6,25%",        "0%",    "9,71%", 
+                        "Media",   "10,53%",       "0%",     "7,35%",     "6,8%", 
+  "Member state administration",   "10,53%",       "0%",        "0%",    "1,94%", 
+                        "Total",     "100%",     "100%",      "100%",     "100%", 
+  )
+
+qual_table %>% 
+  mutate(across(-1, ~str_remove(.x, "\\%") %>% 
+                  str_replace("\\,", ".") %>% 
+              as.numeric() %>% 
+                round(1))) %>% 
+  knitr::kable(caption = "Percentage of speaker codes in the qualitative corpus.",
+               format = "pandoc")
+
+```
+
+
+
+## Robustness check: Year selection
+
+Figure \@ref(fig:filter-pre-2011-years) shows that our conclusions remain substantially unaltered if we restrict our analysis to years where all three agencies are in operation (2011-2019).
+
+```{r filter-pre-2011-years, fig.cap="Replication of main text's Figure 2, restricted to 2011--2019."}
+
+joined_monthlies <- read_rds("../data/joined_monthlies.Rds")
+
+joined_monthlies %>%
+  filter(month > ymd("2010-12-31")) %>%
+  group_by(agency, dimension) %>%
+  summarise(
+    tot_arts = sum(monthly_totals),
+    tot_words = sum(wordcount)
+  ) %>%
+  mutate(mean_words_pr_art = tot_words / tot_arts) %>%
+  filter(dimension != "leg_command") %>%
+  ggplot(aes(agency, mean_words_pr_art, fill = dimension)) +
+  geom_col(position = "dodge") + 
+   labs(
+    # title = "Mean no. of legitimacy words pr article",
+    # subtitle = "Mean of all words/articles",
+    x = "Agency",
+    y = "Mean words per article",
+    fill = "Dimension",
+    caption = "Data 2011–2019"
+  ) +
+     scale_fill_viridis_d(
+       labels = c(
+    "Evidence-based",
+    "Fundamental rights",
+    "Legislator's command",
+    "Participation"),
+    option = "D") +
+  scale_x_discrete(labels = names_lookup) +
+  theme(legend.position = "bottom", panel.grid.major.x = element_blank())
+```
+
+\clearpage
+
+# Analysis 3
+
+In analysis 3, we are working on aggregate data on a corpus of articles that are themselves not directly observed.
+We can imagine this underlying data as encoded in a $\{0,1\}$ indicator score on each dictionary for each article, where the unit of observation is a single news article.
+For each article about an agency $i$, an article either contains at least one word in a legitimation dictionary, or it does not.
+
+This differs slightly from the text-based approach in analysis 1, where we count the *number* of dictionary hits so that each dictionary gives a discrete count variable $\{0, 1, 2, 3, \dots\}$.
+A major advantage of this section's approach that it allows us to get an overview of all EU agencies over a period of many years.
+But it also comes with a drawback: We are not able to give more weight to articles with *more* hits in a given dictionary.
+
+Comparing the search data with the analysis of full-text articles in the previous section, however, gives little reason for concern.
+While the units on the Y axis are different, the relative prevalence of each legitimacy dimension is not substantively different between the search-based and full-text approaches.
+See top panel in figure \@ref(fig:compare-eef) and compare with the figure in the main text, reproduced in the bottom panel.
+
+```{r compare-eef, fig.cap="Comparison between full-text and search-based approaches."}
+
+ags_frac_yearly <- read_rds("../data/ags_frac_yearly.rds")
+
+hardness <- read_rds("../data/hardness.Rds")
+
+
+panel_a <- ags_frac_yearly %>% 
+  filter(agency_excel %in% c("Frontex", "EBA", "EEA")) %>% 
+  group_by(agency_excel, dimension) %>% 
+  summarise(sum_dim = sum(count), 
+            sum_all = sum(all_arts)) %>% 
+  mutate(frac_all = sum_dim / sum_all) %>% 
+  ggplot(aes(agency_excel, frac_all, fill = dimension)) + 
+  geom_col(position = "dodge") + 
+  labs(title = "Search-based approach (Analysis 3)",
+       x = NULL,
+       y = str_wrap("Fraction of articles mentioning at least one word in dictionary", width = 30), 
+       fill = "Dimension") + 
+  scale_fill_viridis_d(
+       labels = c(
+    "Evidence-based",
+    "Fundamental\nrights",
+    "Legislator's\ncommand",
+    "Participation"),
+    option = "D") + 
+  scale_x_discrete(labels = names_lookup) +
+  theme(panel.grid.major.x = element_blank())
+
+panel_b <- joined_monthlies %>%
+  group_by(agency, dimension) %>%
+  summarise(
+    tot_arts = sum(monthly_totals),
+    tot_words = sum(wordcount)
+  ) %>%
+  mutate(mean_words_pr_art = tot_words / tot_arts) %>%
+  filter(dimension != "leg_command") %>%
+  ggplot(aes(agency, mean_words_pr_art, fill = dimension)) +
+  geom_col(position = "dodge") + 
+   labs(
+    title = "Full-text approach (Analysis 1)",
+    # subtitle = "Mean of all words/articles",
+    x = "Agency",
+    y = str_wrap("Mean words\nper article", 20),
+    fill = "Dimension"
+  ) +
+     scale_fill_viridis_d(
+       labels = c(
+    "Evidence-based",
+    "Fundamental\nrights",
+    "Legislator's\ncommand",
+    "Participation"),
+    option = "D") +
+  scale_x_discrete(labels = names_lookup) +
+  theme(panel.grid.major.x = element_blank()) 
+
+
+panel_a / panel_b + plot_layout(guides = "collect") & theme(legend.position = "bottom")
+```
+
+\clearpage
+
+## Salience results
+
+### Between-agency
+
+Table \@ref(tab:salience-between) shows the coefficients and model summaries underlying the main text's Figure 3. 
+
+```{r salience-between}
+
+library(broom)
+
+mod_all_counts2 <- read_rds("../data/mod_all_counts2.rds")
+
+lc_m <- lm(log(leg_command) ~ log(n_parlq) + log(all_arts), data = mod_all_counts2) 
+
+lc <- lc_m %>% 
+  tidy() %>% mutate(model = "Legislator's command")
+
+ev_m <- lm(log(evidence) ~ log(n_parlq) + log(all_arts), data = mod_all_counts2) 
+
+ev <- ev_m %>% 
+  tidy() %>% mutate(model = "Evidence-based")
+
+part_m <- lm(log(participation) ~ log(n_parlq) + log(all_arts), data = mod_all_counts2) 
+
+part <- part_m %>% 
+  tidy() %>% mutate(model = "Participation")
+
+hr_m <- lm(log(hr) ~ log(n_parlq) + log(all_arts), data = mod_all_counts2) 
+
+hr <- hr_m %>% 
+  tidy() %>% mutate(model = "Fundamental rights")
+
+# Main text figure: 
+
+# bind_rows(lc, ev, part, hr) %>% 
+#   filter(term != "(Intercept)") %>% 
+#   ggplot(aes(term, estimate, fill = model)) + 
+#   geom_errorbar(
+#     aes(ymin = estimate - (1.96 * std.error),
+#         ymax = estimate + (1.96 * std.error)),
+#     width = .1,
+#     position = position_dodge(width = .3)
+#   ) + 
+#   geom_point(
+#     position = position_dodge(width = .3),
+#     shape = 21,
+#     color = "black",
+#     size = 3
+#   ) + 
+#   geom_hline(
+#     yintercept = 0, 
+#     linetype = 2) + 
+#   scale_fill_viridis_d() + 
+#   labs(x = "Term",
+#        y = "Estimate (*β*)", 
+#        fill = "Dependent variable") + 
+#   scale_x_discrete(labels = c(`log(all_arts + 1)` = "ln(All articles)",
+#                               `log(n_parlq)` = "ln(Parliamentary questions)")) + 
+#   theme(axis.text.x = ggtext::element_markdown(),
+#         axis.title.y = ggtext::element_markdown())
+
+
+modelsummary::modelsummary(list("Evidence-based" = ev_m, "Fund. Rights" = hr_m, "Leg. Command" = lc_m, "Participation" = part_m), 
+                           output = "kableExtra", 
+                           caption = "Full results, between-agency salience models (OLS).",
+                           label = "tab:salience-between", statistic = "conf.int",
+                           coef_rename = c("log(n_parlq)" = "Parliamentary\nquestions (log)",
+                                           "log(all_arts)" = "All articles (log)"))
+```
+
+
+### Within-agency 
+
+We fit two models for each dependent variable: One agency-fixed-effects OLS and one agency-random-effects negative binomial. None of the coefficients for parliamentary questions (our explanatory variable) are statistically significant or substantially large. See table \@ref(tab:salience-mods). 
+
+```{r salience-mods, fig.cap="Output from two time-series–cross-section regressions: Fixed effects OLS with logged dependent variable, random effects negative binomial."}
+
+library(lme4)
+
+for_mod_parl_counts_no_drop <- read_rds("../data/for_mod_parl_counts_no_drop.Rds")
+
+for_mod_parl_counts_no_drop %>% 
+  left_join(hardness, by = c("agency_excel" = "agency")) -> dfm_no_drop
+
+dfm_no_drop %>% 
+  # Too many zeroes: 
+  filter(agency_excel != "EUSPA") %>% 
+  mutate(allnorm= scale(all_arts),
+         parlnorm = scale(parl_questions)) -> normd
+
+
+
+# pchisq(2 * (logLik(nb_mod_re) - logLik(pos_re)), df = 1, lower.tail = FALSE)
+# Negbin clearly best. 
+
+
+# Trying a rowwise nesting approach
+
+mods <- normd %>% 
+  # select(year, agency_excel, evidence:participation, parlnorm, allnorm) %>% 
+  pivot_longer(cols = c(evidence, hr, leg_command, participation), 
+               names_to = "dv") %>% 
+  nest_by(dv) %>% 
+  rowwise() %>% 
+  mutate(
+    plm = list(
+        plm::plm(log(value + 0.1) ~ 
+           parlnorm + 
+           allnorm, 
+         data = data, 
+         index = c("agency_excel"))
+    ),
+    negbin = list(
+      glmer.nb(value ~ 
+           parlnorm + 
+           allnorm + 
+           (1|agency_excel), 
+         data = data)
+    )
+  )
+
+to_table <- mods %>% 
+  pivot_longer(c(plm, negbin), names_to = "model") %>% 
+  mutate(model = recode(model, plm = "PLM",
+                        negbin = "Negative binomial"))
+
+library(modelsummary)
+library(gt)
+
+names(to_table$value) <- to_table$model
+
+labs <- to_table %>% 
+  count(dv) %>% 
+  mutate(dv = 
+    recode(dv, !!!recode_lookup)) # Use a named character vector for unquote splicing with !!!
+
+library(kableExtra)
+
+modelsummary(to_table$value, coef_rename =
+               c(parlnorm = "Parliamentary questions",
+                 allnorm = "All articles"),
+             coef_omit = "sd__|SD", statistic = "conf.int",
+             vcov = rep(c("robust", "classical"), 4), gof_omit = "Std*|Marg.|Cond.|RMSE|ICC", 
+             output = "kableExtra", 
+             caption = "Output from two time-series–cross-section regressions: Fixed effects OLS with logged dependent variable and robust standard errors; agency-level random effects negative binomial.", 
+           notes = list("95 percent confidence intervals in brackets"),
+             label = "tab:salience-mods") %>% 
+  add_header_above(c(" " = 1, "Evidence-based" = 2, 
+                     "Fundamental\nRights" = 2, 
+                     "Legislator's\nCommand" = 2,
+                     "Participation" = 2)) %>% 
+  kable_styling(full_width = TRUE) %>% 
+  landscape()
+
+```
+
+\clearpage
+
+## Hardness: Details on coding 
+
+Coders are instructed to first examine the title of the agency and the “about” section of the agency’s website. They should look for what disciplines are prominent in its self-presentation, and, if necessary, the education and employment background of its director. If there is discrepancy between an agency's field, self-presentation and the background of its director, the field takes precedence.   
+
+Agencies are coded with hard (3) if they deal with the natural sciences, including physics, chemistry, medicine, environment or climate science, and biology. In borderline or unclear cases, an agency’s having a scientific board, scientific advisers, or similar, counts towards its inclusion in this category.
+
+Agencies are coded with medium (2) if they deal with economics, finance, or banking—broadly, the discipline of economics. The rationale here is that while economics is a social science, it is widely considered “harder” or more “scientific” than the other social sciences [see e.g. @Fourcade2015]. 
+
+Agencies are coded with soft (1) if they operate in the social sciences or law, or if their operation is not clearly related to any particular expertise.
+
+An agency’s hardness is not expected to vary over time. This measure is therefore coded once for each agency.
+
+All agencies' assigned categories are reported in table \@ref(tab:hardness-table). Here we have also added an indicator of whether the agency is a *Migration and Home Affairs* agency. 
+
+```{r hardness-table, results='asis', fig.cap="Agencies with their assigned hardness scores and indicators of Migration and Home Affairs affiliation"}
+hardness %>% 
+  filter(agency != "-") %>% 
+  mutate(across(c("external_operational", "jha"), function(x) recode(x, "0" = "", "1" = "✓"))) %>% 
+  select(agency, hardness, jha) %>% 
+  knitr::kable(col.names = c(agency = "Agency", 
+                      hardness = "Hardness", 
+                      jha = "Migration and Home Affairs"
+                      ), 
+               format = "pandoc", 
+               caption = "All agencies with their coded hardness categories and MHA affiliation.")
+```
+
+\clearpage
+
+# References

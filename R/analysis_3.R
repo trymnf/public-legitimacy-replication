@@ -2,13 +2,6 @@
 # Analysis 3: All agencies ------------------------------------------------
 
 
-## ----setup, include=FALSE---------------------------------------------------------------------
-
-# Hack together a params 
-
-params <- list(online = TRUE)
-
-
 ## ----packages and data------------------------------------------------------------------------
 
 # Packages 
@@ -241,15 +234,7 @@ bind_rows(lc, ev, part, hr) %>%
   theme(axis.text.x = ggtext::element_markdown(),
         axis.title.y = ggtext::element_markdown())
 
-# library(ggeffects)
-# 
-# ggpredict(lm(log(leg_command) ~ 
-#1), data = mod_all_counts), 
-#           terms = "n_parlq")
-
-
-
-
+ggsave("plots/salience-between.png", width = 15, height = 8, units = "cm", dpi = 300) 
 
 
 # Figure 4: Bootstrapped hardness models ----------------------------------
@@ -301,6 +286,13 @@ if(file.exists("data/boot_mod_ungr.Rds")){
   write_rds(boot_mod_ungr, "data/boot_mod_ungr.Rds")
 }
 
+summary_bootmod <- boot_mod_ungr %>%
+  mutate(hardness = as_factor(hardness)) %>% 
+  group_by(hardness, dimension) %>%
+  summarise(estimate = mean(prop_dim), 
+            ci_lower = quantile(prop_dim, 0.025),  # "Two-tailed" CI
+            ci_upper = quantile(prop_dim, 0.975), 
+            .groups = "drop")
 
 library(ggdist)
 
