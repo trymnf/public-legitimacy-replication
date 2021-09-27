@@ -2,7 +2,7 @@
 
 Replication data and scripts. 
 
-**Please note:** It is unfortunately not possible to download or clone the anonymized version of this repository. You may browse and download individual files.   
+**Please note:** It is unfortunately not possible to download or clone the anonymized version of this repository. You may browse and download individual files. If you are a reviewer and want a zip file of the full repository, please contact the Editor. 
 
 ## What's what
 
