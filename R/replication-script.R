@@ -7,19 +7,21 @@ library(patchwork)
 
 # Theming -----------------------------------------------------------------
 
-# You need the font IBM Plex Sans. Available on Google fonts. 
-# remove the 'text' argument if it gives you trouble. 
+# You need the font IBM Plex Sans. Available on Google fonts.
+# remove the 'text' argument if it gives you trouble.
 
-theme_set(theme_minimal() + 
-            theme(text = element_text(family = "IBM Plex Sans"),
-                  plot.title = element_text(face = "bold")))
+theme_set(theme_minimal() +
+  theme(
+    text = element_text(family = "IBM Plex Sans"),
+    plot.title = element_text(face = "bold")
+  ))
 
 
 
 # ----------------------------------------------------
 
-# This is a dataset with the full text removed. If you have a 
-# subscription to Retriever or Mediearkivet, you may access the 
+# This is a dataset with the full text removed. If you have a
+# subscription to Retriever or Mediearkivet, you may access the
 # full texts via the 'url' column.
 
 dt_hits <- read_csv("data/dt_hits.csv")
@@ -30,21 +32,19 @@ dt_hits <- read_csv("data/dt_hits.csv")
 
 dt_tfidfs <- dt_hits %>%
   group_by(term) %>%
-  
   # Calculate IDF. Varies pr term---not document
   # Furthermore: We don't want to divide by 0. So add 1 to numerator & denominator
   # (Alternative IDF specification for robustness check)
-  
+
   mutate(
     idf = log((1 + n()) /
-                (1 + sum(term_counts > 0))),
+      (1 + sum(term_counts > 0))),
     idf_alt = log(n() /
-                    (1 + sum(term_counts > 0)))
+      (1 + sum(term_counts > 0)))
   ) %>%
   ungroup() %>%
-  
   # tf-idf: unweighted in this case. so tf = hitcounts
-  
+
   mutate(tf_idf = term_counts * idf) %>%
   arrange(desc(tf_idf))
 
@@ -60,8 +60,8 @@ sum_dt <- dt_tfidfs %>%
 
 # Joining back to articles ------------------------------------------------
 
-# The commented-out code works on full-text data -- not available in this repository. 
-# Kept here for transparency purposes. 
+# The commented-out code works on full-text data -- not available in this repository.
+# Kept here for transparency purposes.
 
 
 # dt <- read_rds("data/data.Rds")
@@ -69,7 +69,7 @@ sum_dt <- dt_tfidfs %>%
 # dt_tf <- dt %>%
 #   left_join(sum_dt, by = "id")
 
-# Check that the dimensions are correct. Each article gets 4 rows; 
+# Check that the dimensions are correct. Each article gets 4 rows;
 # one for each legitimacy dimension
 
 # stopifnot(nrow(dt) * length(unique(dt$leg_dim)) == nrow(dt_tf))
@@ -79,7 +79,7 @@ sum_dt <- dt_tfidfs %>%
 # Filtering ---------------------------------------------------------------
 
 # Due to the search process, there will be duplicates between the legitimacy dimensions.
-# We need to remove these. 
+# We need to remove these.
 
 # dt_filtered <- dt_tf %>%
 #   mutate(keep = case_when(
@@ -147,14 +147,14 @@ monthly_totals <- lw %>%
 
 monthlies %>%
   complete(agency, dimension,
-           month = seq.Date(min(month),
-                            max(month),
-                            by = "month"
-           ),
-           fill = list(
-             wordcount = 0,
-             tfcount = 0
-           )
+    month = seq.Date(min(month),
+      max(month),
+      by = "month"
+    ),
+    fill = list(
+      wordcount = 0,
+      tfcount = 0
+    )
   ) %>%
   full_join(monthly_totals) -> joined_monthlies
 
@@ -176,7 +176,7 @@ a <- joined_monthlies %>%
   mutate(mean_words_pr_art = tot_words / tot_arts) %>%
   filter(dimension != "leg_command") %>%
   ggplot(aes(agency, mean_words_pr_art, fill = dimension)) +
-  geom_col(position = "dodge") + 
+  geom_col(position = "dodge") +
   labs(
     title = "Mean no. of legitimacy words pr article",
     subtitle = "Mean of all words/articles",
@@ -187,19 +187,21 @@ a <- joined_monthlies %>%
   scale_fill_viridis_d(
     # Disclaimer: Test that your version of ggplot gives the same sorting as mine
     # (comment out the 'labels' argument).
-    # Or else the labels might be wrong. 
-    labels = c( 
+    # Or else the labels might be wrong.
+    labels = c(
       "Evidence-based",
       "Fundamental rights",
       "Legislator's command",
-      "Participation"),
-    option = "D") +
+      "Participation"
+    ),
+    option = "D"
+  ) +
   scale_x_discrete(labels = names_lookup) +
   theme(legend.position = "bottom", panel.grid.major.x = element_blank())
 
 a
 
-# Disaggregating by year 
+# Disaggregating by year
 
 yearlies <- joined_monthlies %>%
   mutate(year = year(month)) %>%
@@ -218,19 +220,25 @@ yearlies <- joined_monthlies %>%
 yearlies %>%
   ggplot(aes(year, words_pr_year, color = dimension)) +
   geom_line(size = 1.2, alpha = 0.9) +
-  facet_wrap(~agency, ncol = 1, labeller = labeller(agency = names_lookup)) + 
+  facet_wrap(~agency, ncol = 1, labeller = labeller(agency = names_lookup)) +
   scale_color_viridis_d(
     labels = c(
       "Evidence-based",
       "Fundamental rights",
       "Legislator's command",
-      "Participation"),
-    option = "D") + 
-  labs(y = "Mean words per article", 
-       x = "Year", 
-       color = "Dimension") + 
-  theme(legend.position = "bottom", 
-        strip.text = element_text(face = "bold")) + 
+      "Participation"
+    ),
+    option = "D"
+  ) +
+  labs(
+    y = "Mean words per article",
+    x = "Year",
+    color = "Dimension"
+  ) +
+  theme(
+    legend.position = "bottom",
+    strip.text = element_text(face = "bold")
+  ) +
   scale_x_continuous(breaks = c(2007, 2010, 2013, 2016, 2019)) -> yearly_plot
 
 
@@ -238,6 +246,10 @@ yearlies %>%
 
 a_notitle <- a + ggtitle(NULL, subtitle = NULL)
 
-all_and_year <- (a_notitle + yearly_plot + theme(legend.position = "none")) / guide_area() + plot_annotation(tag_levels = "A") + plot_layout(guides = "collect", heights = c(9, 1))
+all_and_year <- (a_notitle + yearly_plot + 
+                   theme(legend.position = "none")) / 
+  guide_area() + 
+  plot_annotation(tag_levels = "A") + 
+  plot_layout(guides = "collect", heights = c(9, 1))
 
 ggsave(all_and_year, filename = "plots/all-and-year-w-fundrights.png", width = 8, height = 4)
