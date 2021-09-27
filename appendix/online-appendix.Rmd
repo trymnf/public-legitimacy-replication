@@ -14,6 +14,9 @@ output:
     df_print: paged
   bookdown::word_document2: default
 bibliography: [out.bib, packages.bib]
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r setup, include=FALSE}
@@ -58,6 +61,9 @@ together <- read_rds("../data/together-sep2020.Rds")
 # Dictionary Approach
 
 We define four *a priori* dictionaries based on existing theory and central policy documents.
+We aim to capture evidence-based arguments using technical terms (e.g. expert, evidence, science, fact, proof).
+For the legislators' command argument, we use words associated with the political and parliamentary process (parliament, elected, vote(d), representative, etc.).
+For participation, we used words like participation, 'civil society,' 'lay people,' transparent, 'interest group.' Human rights is a relatively specialized discourse, which we capture using words like 'human right(s),' dignity, equality, and 'physical integrity.'
 
 +----------------------+----------------------------------------------------------------+
 | Legitimacy argument  | Main sources                                                   |
@@ -75,7 +81,11 @@ We define four *a priori* dictionaries based on existing theory and central poli
 | Human rights         | European Charter of Fundamental Rights                         |
 +----------------------+----------------------------------------------------------------+
 
-We aimed to define the dictionary before seeing the data we use for our analysis. Some tuning was nonetheless necessary. We had to remove words that made theoretical sense, but lacked the specificity necessary to pick up on our categories of theoretical interest. For instance, "control" is a core feature of the legislators' command argument, but impossible to use because it is too general (as in the term "border control"). The final dictionaries are given here:
+We aimed to define the dictionary before seeing the data we use for our analysis.
+Some tuning was nonetheless necessary.
+We had to remove words that made theoretical sense, but lacked the specificity necessary to pick up on our categories of theoretical interest.
+For instance, "control" is a core feature of the legislators' command argument, but impossible to use because it is too general (as in the term "border control").
+The final dictionaries are given here:
 
 ## Dictionary terms
 
@@ -124,7 +134,7 @@ We aimed to define the dictionary before seeing the data we use for our analysis
 | röstat           | voted (perfect)                                     |
 | folkomröst\*     | Popular vote/referendum                             |
 
-: Legislator's command terms 
+: Legislator's command terms
 
 | Swedish terms      | Translated          |
 |--------------------|---------------------|
@@ -145,8 +155,7 @@ We aimed to define the dictionary before seeing the data we use for our analysis
 | intressegrupp\*    | interest group(s)   |
 | konsultation\*     | consultation(s)     |
 
-: Public participation terms 
-
+: Public participation terms
 
 | Swedish terms             | Translation                              |
 |---------------------------|------------------------------------------|
@@ -164,17 +173,21 @@ We aimed to define the dictionary before seeing the data we use for our analysis
 | mental integritet\*       | mental integrity                         |
 | humanitär\*               | humanitarian                             |
 
-: Fundamental rights terms 
+: Fundamental rights terms
 
-
-
-# Analysis 1 and 2 
+# Analysis 1 and 2
 
 ## Agency contexts
 
-We defined a sparse set of context terms for each agency. The aim of the contexts are to capture the relative coverage of an agency in news articles about its policy field.
+We defined a sparse set of context terms for each agency.
+The aim of the contexts are to capture the relative coverage of an agency in news articles about its policy field.
 
-The context terms are selected to capture a common-sense idea of the agencies respective policy areas. The initial terms were tuned after looking at a sample of articles. For Frontex, we had to widen the initial search terms from a narrower focus on border control to a wider focus on migrants and refugees. For EEA, we initially searched only for "climate change" and "global warming." We found that most EEA articles in Sweden were about cars and air quality. So we included terms about air quality and emissions. EBA deals within a narrow domain which is well captured by a single word: "bank." We use the plural, indefinite and definite (bank**er**, bank**erna**) in order to avoid homonyms.
+The context terms are selected to capture a common-sense idea of the agencies respective policy areas.
+The initial terms were tuned after looking at a sample of articles.
+For Frontex, we had to widen the initial search terms from a narrower focus on border control to a wider focus on migrants and refugees.
+For EEA, we initially searched only for "climate change" and "global warming." We found that most EEA articles in Sweden were about cars and air quality.
+So we included terms about air quality and emissions.
+EBA deals within a narrow domain which is well captured by a single word: "bank." We use the plural, indefinite and definite (bank**er**, bank**erna**) in order to avoid homonyms.
 
 ```{r some setup for the next paragraph}
 
@@ -186,7 +199,13 @@ howmany <- read_rds("../data/three-agencies-and-context-and-all-dimensions-new.R
 
 ## Data collection
 
-We use the dictionaries to gather our final corpus. We download all articles matching {agency $A_i$} **and** {any term in legitimacy dimension $D_j$} AND {any term in context $C_i$}. This gives 12 non-mutually-exclusive sets: three agencies-in-context by four legitimacy dimensions. We combine these sets into one dataset. We used a script for parsing text files from the Retriever Mediearkivet database written in `Python` by [anonymized for peer review]. We ran the script from `R` through the `reticulate` package [@R-reticulate]. This gave us a dataset with `r nrow(howmany)` articles and `r ncol(howmany)` variables.
+We use the dictionaries to gather our final corpus.
+We download all articles matching {agency $A_i$} **and** {any term in legitimacy dimension $D_j$} AND {any term in context $C_i$}.
+This gives 12 non-mutually-exclusive sets: three agencies-in-context by four legitimacy dimensions.
+We combine these sets into one dataset.
+We used a script for parsing text files from the Retriever Mediearkivet database written in `Python` by [anonymized for peer review].
+We ran the script from `R` through the `reticulate` package [@R-reticulate].
+This gave us a dataset with `r nrow(howmany)` articles and `r ncol(howmany)` variables.
 
 +-------------+------------------------------+------------------------------------------------------------------------+------------------------------------------------------------------------+
 | **Agency**  | **Agency terms**             | **Context terms (Swedish)**                                            | **Context terms (Translation)**                                        |
@@ -206,9 +225,11 @@ Additionally, we download the monthly *frequency* of:
 -   Articles mentioning any of an agency's *context terms*.
 -   Articles mentioning an agency *and* any of its context terms.
 
-These figures allow us to calculate an agency's relative coverage within a theoretically defined context. They also allow us to calculate the total number of legitimacy terms per article about an agency, without needing to download the full text of articles with zero hits on the legitimacy dictionaries.
+These figures allow us to calculate an agency's relative coverage within a theoretically defined context.
+They also allow us to calculate the total number of legitimacy terms per article about an agency, without needing to download the full text of articles with zero hits on the legitimacy dictionaries.
 
-Plotting monthly articles mentioning an agency against monhtly articles mentioning an agency *and its context terms* shows that the sparse context terms capture well the articles in which the agencies are mentioned. See \@ref(fig:agency-context).
+Plotting monthly articles mentioning an agency against monhtly articles mentioning an agency *and its context terms* shows that the sparse context terms capture well the articles in which the agencies are mentioned.
+See \@ref(fig:agency-context).
 
 ```{r agency-context, fig.cap="Monthly hits for agency plotted against monthly hits for *agency-in-context*.", fig.height=4}
 
@@ -235,9 +256,10 @@ together %>%
   theme(aspect.ratio = 1)
 ```
 
-Figure \@ref(fig:aic-over-time) shows the monthly percentage of articles in an agency's context that also mentions the agency. We see, for instance, that the *relative* coverage of Frontex increased (in articles about refugees and migrants) during the 2015 refugee crisis. 
+Figure \@ref(fig:aic-over-time) shows the monthly percentage of articles in an agency's context that also mentions the agency.
+We see, for instance, that the *relative* coverage of Frontex increased (in articles about refugees and migrants) during the 2015 refugee crisis.
 
-```{r aic-over-time, fig.cap="Monthly percentage of articles in an agency’s context mentioning the agency. With LOESS smoothed conditional mean (red line). Each point is one month.", fig.height=4}
+```{r aic-over-time, fig.cap="Monthly percentage of articles in an agency’s context mentioning the agency. With LOESS smoothed conditional mean (red line). Each point is one month.", fig.height=3}
 
 library(scales)
 
@@ -280,10 +302,10 @@ together %>%
 
 ```
 
-
 ## Descriptive statistics on agencies and their contexts
 
-This section presents the monthly number of articles mentioning an agency, its context terms, and an agency *and* any of its context terms. Note that the scale of the plots' y-axes vary greatly.
+This section presents the monthly number of articles mentioning an agency, its context terms, and an agency *and* any of its context terms.
+Note that the scale of the plots' y-axes vary greatly.
 
 ```{r frontex-stats,  fig.cap="Search hits, EEA"}
 agency_name <- "Frontex"
@@ -414,7 +436,9 @@ together %>%
 
 ## Term frequencies and TF-IDF
 
-As a next step, we score each article on our legitimacy dimensions. We calculate two main measures: The term frequency ($\mathit{tf}_{d,t}$) counts the number of words from each legitimacy dimension in each article. The TF-IDF weighs the term frequency by how many documents the term appears in.
+As a next step, we score each article on our legitimacy dimensions.
+We calculate two main measures: The term frequency ($\mathit{tf}_{d,t}$) counts the number of words from each legitimacy dimension in each article.
+The TF-IDF weighs the term frequency by how many documents the term appears in.
 
 1.  For each article $d$, count how many times it contains each term $t$ in each dictionary. This gives every article an array of terms in four dictionaries, and their frequencies: $\mathit{tf}_{d,t}$
 2.  For each term, calculate its *inverse document frequency*, given by $\mathit{idf}_t = \log{\frac{1 + N}{1 + \mathit{df}_t}}$, where $N$ is the total number of articles in the corpus and $\mathit{df}_t$ is the number of articles containing term $t$.
@@ -422,11 +446,16 @@ As a next step, we score each article on our legitimacy dimensions. We calculate
 4.  For each article, summarize the TF-IDF scores within each legitimacy dimension.
 5.  Also, summarize each article's total term frequency $TF$ for each legitimacy dimension.
 
-In order to obtain the words-per-article measure reported in the article's Figure 2, panel **A**, we calculated the total term frequency for each agency-legitimacy-dimension combination, divided by the total number of articles mentioning that agency. We also calculated the same measure by year in panel **B**.
+In order to obtain the words-per-article measure reported in the article's Figure 2, panel **A**, we calculated the total term frequency for each agency-legitimacy-dimension combination, divided by the total number of articles mentioning that agency.
+We also calculated the same measure by year in panel **B**.
 
 ## Articles selected for qualitative coding
 
-We select the 40 articles with the highest total TF-IDF on a legitimacy dimension for qualitative analysis. Some agencies have less than 40 articles in a legitimacy dimension. Moreover, since TF-IDFs are calculated from a limited set of integers, there are inevitably some articles with exactly equal TF-IDFs. When this is the case for the 40th highest, we include all articles with that score. That gives more than 40 articles in some cells of the below table.
+We select the 40 articles with the highest total TF-IDF on a legitimacy dimension for qualitative analysis.
+Some agencies have less than 40 articles in a legitimacy dimension.
+Moreover, since TF-IDFs are calculated from a limited set of integers, there are inevitably some articles with exactly equal TF-IDFs.
+When this is the case for the 40th highest, we include all articles with that score.
+That gives more than 40 articles in some cells of the below table.
 
 | Agency  | Evidence-based | Fundamental rights | Legislator's Command | Participation |
 |:--------|---------------:|-------------------:|---------------------:|--------------:|
@@ -438,7 +467,8 @@ We select the 40 articles with the highest total TF-IDF on a legitimacy dimensio
 
 ## Who does the speaking?
 
-In the qualitative corpus, what actors are the most prominent sources? (Note that the qualitative corpus is a non-random and possibly non-representative sample of the full corpus, in quantitative terms.)
+In the qualitative corpus, what actors are the most prominent sources?
+(Note that the qualitative corpus is a non-random and possibly non-representative sample of the full corpus, in quantitative terms.)
 
 ```{r qual-table, results='asis'}
 
@@ -467,7 +497,30 @@ qual_table %>%
 
 ```
 
+## Frequencies of main qualitative codes
 
+"Neutral" in this table refers to instances where the agency is discussed without explicit praise or critique.
+Here is an example of an evidence-based--neutral sentence about Frontex: "In 2010, only 4500 refugees arrived via the Central Mediterranean route, according to numbers from Frontex" (Dagens ETC 2017).
+
+|                      | Negative | Positive | Neutral |
+|----------------------|----------|----------|---------|
+| **EBA**              |          |          |         |
+| Evidence-based       | 17       | 11       | 45      |
+| Fundamental rights   | 0        | 0        | 0       |
+| Legislator's command | 8        | 0        | 2       |
+| Participation        | 1        | 3        | 0       |
+| **EEA**              |          |          |         |
+| Evidence-based       | 0        | 1        | 64      |
+| Fundamental rights   | 0        | 0        | 0       |
+| Legislator's command | 0        | 0        | 0       |
+| Participation        | 0        | 0        | 0       |
+| **Frontex**          |          |          |         |
+| Evidence-based       | 16       | 18       | 14      |
+| Fundamental rights   | 54       | 8        | 5       |
+| Legislator's command | 12       | 3        | 1       |
+| Participation        | 2        | 2        | 2       |
+
+: Frequency of main qualitative codes, by agency, dictionary, and valence.
 
 ## Robustness check: Year selection
 
@@ -589,7 +642,7 @@ panel_a / panel_b + plot_layout(guides = "collect") & theme(legend.position = "b
 
 ### Between-agency
 
-Table \@ref(tab:salience-between) shows the coefficients and model summaries underlying the main text's Figure 3. 
+Table \@ref(tab:salience-between) shows the coefficients and model summaries underlying the main text's Figure 3.
 
 ```{r salience-between}
 
@@ -655,10 +708,11 @@ modelsummary::modelsummary(list("Evidence-based" = ev_m, "Fund. Rights" = hr_m, 
                                            "log(all_arts)" = "All articles (log)"))
 ```
 
+### Within-agency
 
-### Within-agency 
-
-We fit two models for each dependent variable: One agency-fixed-effects OLS and one agency-random-effects negative binomial. None of the coefficients for parliamentary questions (our explanatory variable) are statistically significant or substantially large. See table \@ref(tab:salience-mods). 
+We fit two models for each dependent variable: One agency-fixed-effects OLS and one agency-random-effects negative binomial.
+None of the coefficients for parliamentary questions (our explanatory variable) are statistically significant or substantially large.
+See table \@ref(tab:salience-mods).
 
 ```{r salience-mods, fig.cap="Output from two time-series–cross-section regressions: Fixed effects OLS with logged dependent variable, random effects negative binomial."}
 
@@ -743,19 +797,27 @@ modelsummary(to_table$value, coef_rename =
 
 \clearpage
 
-## Hardness: Details on coding 
+## Hardness: Details on coding
 
-Coders are instructed to first examine the title of the agency and the “about” section of the agency’s website. They should look for what disciplines are prominent in its self-presentation, and, if necessary, the education and employment background of its director. If there is discrepancy between an agency's field, self-presentation and the background of its director, the field takes precedence.   
+Coders are instructed to first examine the title of the agency and the "about" section of the agency's website.
+They should look for what disciplines are prominent in its self-presentation, and, if necessary, the education and employment background of its director.
+If there is discrepancy between an agency's field, self-presentation and the background of its director, the field takes precedence.
 
-Agencies are coded with hard (3) if they deal with the natural sciences, including physics, chemistry, medicine, environment or climate science, and biology. In borderline or unclear cases, an agency’s having a scientific board, scientific advisers, or similar, counts towards its inclusion in this category.
+Agencies are coded with hard (3) if they deal with the natural sciences, including physics, chemistry, medicine, environment or climate science, and biology.
+In borderline or unclear cases, an agency's having a scientific board, scientific advisers, or similar, counts towards its inclusion in this category.
 
-Agencies are coded with medium (2) if they deal with economics, finance, or banking—broadly, the discipline of economics. The rationale here is that while economics is a social science, it is widely considered “harder” or more “scientific” than the other social sciences [see e.g. @Fourcade2015]. 
+Agencies are coded with medium (2) if they deal with economics, finance, or banking---broadly, the discipline of economics.
+The rationale here is that while economics is a social science, it is widely considered "harder" or more "scientific" than the other social sciences [see e.g. @Fourcade2015].
 
 Agencies are coded with soft (1) if they operate in the social sciences or law, or if their operation is not clearly related to any particular expertise.
 
-An agency’s hardness is not expected to vary over time. This measure is therefore coded once for each agency.
+An agency's hardness is not expected to vary over time.
+This measure is therefore coded once for each agency.
 
-All agencies' assigned categories are reported in table \@ref(tab:hardness-table). Here we have also added an indicator of whether the agency is a *Migration and Home Affairs* agency. 
+Both authors coded all agencies according to the above scheme. At first pass, we agreed on 65.7 % of cases. Where there were discrepancies, we discussed the cases, until agreement was reached. In borderline cases, an agency’s field was given priority over the expertise or profile of the director or management board.
+
+All agencies' assigned categories are reported in table \@ref(tab:hardness-table).
+Here we have also added an indicator of whether the agency is a *Migration and Home Affairs* agency.
 
 ```{r hardness-table, results='asis', fig.cap="Agencies with their assigned hardness scores and indicators of Migration and Home Affairs affiliation"}
 hardness %>% 
