@@ -2,6 +2,8 @@
 
 Replication data and scripts. 
 
+**Please note:** It is unfortunately not possible to download or clone the anonymized version of this repository. You may browse and download individual files.   
+
 ## What's what
 
 * `R/`: Scripts for the figures and analysis: `figure-1.R`, `replication-script.R`, and `analysis_3.R`
