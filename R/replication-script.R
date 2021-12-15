@@ -12,8 +12,10 @@ library(patchwork)
 
 theme_set(theme_minimal() +
   theme(
-    text = element_text(family = "IBM Plex Sans"),
-    plot.title = element_text(face = "bold")
+    text = element_text(family = "IBM Plex Sans", size = 10),
+    plot.title = element_text(face = "bold"),
+    legend.key.size = unit(0.5, 'cm'),
+    legend.box="vertical"
   ))
 
 
@@ -197,9 +199,7 @@ a <- joined_monthlies %>%
     option = "D"
   ) +
   scale_x_discrete(labels = names_lookup) +
-  theme(legend.position = "bottom", panel.grid.major.x = element_blank())
-
-a
+  theme(legend.position = "bottom", panel.grid.major.x = element_blank()) + guides(fill=guide_legend(nrow=2,byrow=TRUE))
 
 # Disaggregating by year
 
@@ -238,7 +238,7 @@ yearlies %>%
   theme(
     legend.position = "bottom",
     strip.text = element_text(face = "bold")
-  ) +
+  ) + guides(fill=guide_legend(nrow=2,byrow=TRUE)) +
   scale_x_continuous(breaks = c(2007, 2010, 2013, 2016, 2019)) -> yearly_plot
 
 
@@ -250,6 +250,8 @@ all_and_year <- (a_notitle + yearly_plot +
                    theme(legend.position = "none")) / 
   guide_area() + 
   plot_annotation(tag_levels = "A") + 
-  plot_layout(guides = "collect", heights = c(9, 1))
+  plot_layout(guides = "collect", heights = c(9, 1)) 
 
-ggsave(all_and_year, filename = "plots/all-and-year-w-fundrights.png", width = 8, height = 4)
+# ggsave(all_and_year, filename = "plots/all-and-year-w-fundrights.png", width = 8, height = 4)
+
+ggsave(all_and_year, filename = "plots/fig2.pdf", width = 13.2, height = 9, units = "cm", dpi = 300, device = cairo_pdf)

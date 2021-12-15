@@ -191,7 +191,7 @@ to_plot_top %>%
     legend.position = "none"
   )
 
-
+ggsave("plots/fig1.pdf", width = 13.2, height = 10.2, units = "cm", dpi = 300, device = cairo_pdf)
 
 
 ## ----Figure 3: Regression coefficients from four OLS models. All variables are log-transformed. 95 % confidence intervals."--------------------------------------------------
@@ -272,7 +272,8 @@ bind_rows(lc, ev, part, hr) %>%
     axis.title.y = ggtext::element_markdown()
   )
 
-ggsave("plots/salience-between.png", width = 6, height = 4, units = "in", dpi = 300)
+# ggsave("plots/salience-between.png", width = 6, height = 4, units = "in", dpi = 300)
+ggsave("plots/fig3.pdf", width = 13.2, height = 9, units = "cm", dpi = 300, device = cairo_pdf)
 
 
 # Figure 4: Bootstrapped hardness models ----------------------------------
@@ -389,7 +390,8 @@ boot_mod_ungr %>%
     strip.text = element_text(face = "bold")
   )
 
-ggsave(width = 15, height = 10, dpi = 300, filename = "plots/hardness_halfeye.png", units = "cm")
+# ggsave(width = 15, height = 10, dpi = 300, filename = "plots/hardness_halfeye.png", units = "cm")
+ggsave(width = 13.2, height = 9, dpi = 300, filename = "plots/fig4.pdf", units = "cm", device = cairo_pdf)
 
 
 
@@ -430,7 +432,7 @@ to_boot_agency %>%
     size = 2,
     aes(fill = jha),
     show.legend = FALSE
-  ) +
+  ) + 
   scale_x_discrete(labels = c(
     "0" = "**Not** MHA",
     "1" = "MHA"
@@ -439,7 +441,8 @@ to_boot_agency %>%
     x = NULL,
     y = "Proportion of articles"
   ) +
-  scale_fill_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1") + 
   ylim(0, NA)
 
-ggsave(width = 10, height = 10, units = "cm", dpi = 300, filename = "plots/MHAplot.png")
+# ggsave(width = 10, height = 10, units = "cm", dpi = 300, filename = "plots/MHAplot.png")
+ggsave(width = 6.6, height = 6.6, units = "cm", dpi = 300, filename = "plots/fig5.pdf", device = cairo_pdf)
