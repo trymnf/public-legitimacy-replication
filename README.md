@@ -1,8 +1,8 @@
 # Beyond Expertise: Examining the Public Legitimacy of EU Agencies
 
-Replication data and scripts. 
+Authors: Trym Nohr Fjørtoft and Asimina Michailidou
 
-**Please note:** It is unfortunately not possible to download or clone the anonymized version of this repository. You may browse and download individual files. If you are a reviewer and want a zip file of the full repository, please contact the Editor. 
+Paper forthcoming in *Political Research Exchange*.
 
 ## What's what
 
