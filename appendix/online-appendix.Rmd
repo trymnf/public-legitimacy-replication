@@ -192,14 +192,6 @@ For EEA, we initially searched only for "climate change" and "global warming." W
 So we included terms about air quality and emissions.
 EBA deals within a narrow domain which is well captured by a single word: "bank." We use the plural, indefinite and definite (bank**er**, bank**erna**) in order to avoid homonyms.
 
-```{r some setup for the next paragraph}
-
-# knitr::write_bib("reticulate", file = "packages.bib")
-
-howmany <- read_rds("../data/three-agencies-and-context-and-all-dimensions-new.Rds")
-
-```
-
 ## Data collection
 
 We use the dictionaries to gather our final corpus.
@@ -208,7 +200,7 @@ This gives 12 non-mutually-exclusive sets: three agencies-in-context by four leg
 We combine these sets into one dataset.
 We used a script for parsing text files from the Retriever Mediearkivet database written in `Python` by [anonymized for peer review].
 We ran the script from `R` through the `reticulate` package [@R-reticulate].
-This gave us a dataset with `r nrow(howmany)` articles and `r ncol(howmany)` variables.
+This gave us a dataset with 8302 articles and 16 variables.
 
 +-------------+------------------------------+------------------------------------------------------------------------+------------------------------------------------------------------------+
 | **Agency**  | **Agency terms**             | **Context terms (Swedish)**                                            | **Context terms (Translation)**                                        |
