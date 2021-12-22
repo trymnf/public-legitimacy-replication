@@ -1,6 +1,6 @@
-# Beyond Expertise: Examining the Public Legitimacy of EU Agencies
+# Replication material for "Beyond Expertise: Examining the Public Legitimacy of EU Agencies"
 
-Authors: Trym Nohr Fjørtoft and Asimina Michailidou
+Trym Nohr Fjørtoft and Asimina Michailidou
 
 *Political Research Exchange*, 2021. 
 
