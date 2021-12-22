@@ -2,7 +2,11 @@
 
 Authors: Trym Nohr Fjørtoft and Asimina Michailidou
 
-Paper forthcoming in *Political Research Exchange*.
+*Political Research Exchange*, 2021. 
+
+Full article: https://doi.org/10.1080/2474736X.2021.2018266
+
+[Online Appendix](appendix/online-appendix.pdf)
 
 ## What's what
 
