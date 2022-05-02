@@ -198,7 +198,7 @@ We use the dictionaries to gather our final corpus.
 We download all articles matching {agency $A_i$} **and** {any term in legitimacy dimension $D_j$} AND {any term in context $C_i$}.
 This gives 12 non-mutually-exclusive sets: three agencies-in-context by four legitimacy dimensions.
 We combine these sets into one dataset.
-We used a script for parsing text files from the Retriever Mediearkivet database written in `Python` by [anonymized for peer review].
+We used a script for parsing text files from the Retriever Mediearkivet database written in `Python` by Knut Waagan at the University of Oslo's Center for Information Technology (USIT).
 We ran the script from `R` through the `reticulate` package [@R-reticulate].
 This gave us a dataset with 8302 articles and 16 variables.
 
